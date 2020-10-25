@@ -1,10 +1,6 @@
 package com.book.tx;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -28,6 +24,11 @@ public class Download {
 	static {
 		Properties p = new Properties();// 获取配置文件
 		try {
+//			new File("./");
+//			File directory = new File("");//参数为空
+//			String courseFile = directory.getCanonicalPath() ;
+//			String author =directory.getAbsolutePath();
+//			System.out.println(courseFile  +"   |   "+author);
 			p.load(new FileReader(new File("book.config")));
 			bookname = p.getProperty("bookname");
 			bookurl = p.getProperty("bookurl");
@@ -102,8 +103,17 @@ public class Download {
 		BufferedWriter bf = null;
 		List<BokeName> charpters = new ArrayList<>();
 		try {
-			File fil = new File(download + bookname + ".txt");
-			FileWriter out = new FileWriter(fil);
+			File file = new File(download + bookname + ".txt");
+			if(!file.exists())
+			{
+				try {
+					file.createNewFile();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			FileWriter out = new FileWriter(file);
 			bf = new BufferedWriter(out);
 			//// 获取了所有的章节链接
 			List<String> ll = getallurl(bookurl);
